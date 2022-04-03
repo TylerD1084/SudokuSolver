@@ -58,10 +58,10 @@ public class SudokuSolver{
             System.out.println("Solved successfully!");
         }
         else{
-            System.out.println("Unsolveable board :(");
             clearScreen();
             printBoard(boardFromStart);
             printBoard(board);
+            System.out.println("Unsolveable board :(");
         }
         
         // printBoard(board);

@@ -6,7 +6,7 @@ If you run it without the file it will use the example sudoku board from John's 
 
 Run the file with no arguments and it will just solve it.
 
-You can put in 2 argument.
+You can put in 2 argument - works fine in Linux, not in Windows.
 
 arg[0]:
 0: just run and solve it

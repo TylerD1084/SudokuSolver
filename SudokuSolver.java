@@ -19,7 +19,12 @@ public class SudokuSolver{
     private static int timeMs;
     private static int watching;
 
+    private static boolean isWindows = false;
+    private static boolean isLinux = false;
+
     public static void main(String [] args){
+
+        runningSystem();
 
         /**
          * first arg: if > 0 then the output in the console got more details 
@@ -70,11 +75,47 @@ public class SudokuSolver{
           
     }
 
+    // public static void ClearConsole(){
+    //     try{
+    //         String operatingSystem = System.getProperty("os.name"); //Check the current operating system
+              
+    //         if(operatingSystem.contains("Windows")){        
+    //             ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+    //             Process startProcess = pb.inheritIO.start();
+    //             startProcess.waitFor();
+    //         } else {
+    //             ProcessBuilder pb = new ProcessBuilder("clear");
+    //             Process startProcess = pb.inheritIO.start();
+
+    //             startProcess.waitFor();
+    //         } 
+    //     }catch(Exception e){
+    //         System.out.println(e);
+    //     }
+    // }
+
+
     /**
      * Clearing the screen
      */
+    //TODO: add function clear screen in Windows CMD OR create an graphical program ;)
+    
     private static void clearScreen() {
-        System.out.println("\033[H\033[2J");
+        String[] cmd;
+        if(isWindows){
+            System.out.println("\033[2J");
+            // try{
+            //     cmd = new String[]{"cmd",  "cls"};
+            //     ProcessBuilder pb = new ProcessBuilder(cmd);
+            //     pb.redirectInput(ProcessBuilder.Redirect.INHERIT);
+            //     Process process = pb.start();
+            // }catch(IOException ioe){
+            // }
+
+        }
+        if(isLinux){
+            System.out.println("\033[H\033[2J");
+        }
     }
 
     /**
@@ -102,24 +143,47 @@ public class SudokuSolver{
     private static void printBoard(int[][] board){
         System.out.println();
 
-        for (int row = 0; row < GRID_SIZE; row++){
-            if (row%3 == 0 && row != 0){
-                System.out.println(ANSI_GREEN + "-----------" + ANSI_RESET);
-            }
-            for (int column = 0; column < GRID_SIZE; column++){
-                if (column%3 == 0 && column != 0){
-                    System.out.print(ANSI_GREEN + "|" + ANSI_RESET);
+        if (isLinux){
+            for (int row = 0; row < GRID_SIZE; row++){
+                if (row%3 == 0 && row != 0){
+                    System.out.println(ANSI_GREEN + "-----------" + ANSI_RESET);
                 }
-                if (board[row][column] == 0){
-                    System.out.print(ANSI_RED + board[row][column] + ANSI_RESET);
+                for (int column = 0; column < GRID_SIZE; column++){
+                    if (column%3 == 0 && column != 0){
+                        System.out.print(ANSI_GREEN + "|" + ANSI_RESET);
+                    }
+                    if (board[row][column] == 0){
+                        System.out.print(ANSI_RED + board[row][column] + ANSI_RESET);
+                    }
+                    else{
+                        System.out.print(ANSI_WHITE + board[row][column] + ANSI_RESET);
+                    }
                 }
-                else{
-                    System.out.print(ANSI_WHITE + board[row][column] + ANSI_RESET);
-                }
+                System.out.println();
             }
             System.out.println();
         }
-        System.out.println();
+
+        if (isWindows){
+            for (int row = 0; row < GRID_SIZE; row++){
+                if (row%3 == 0 && row != 0){
+                    System.out.println("-----------");
+                }
+                for (int column = 0; column < GRID_SIZE; column++){
+                    if (column%3 == 0 && column != 0){
+                        System.out.print("|");
+                    }
+                    if (board[row][column] == 0){
+                        System.out.print(board[row][column]);
+                    }
+                    else{
+                        System.out.print(board[row][column]);
+                    }
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -344,5 +408,19 @@ public class SudokuSolver{
 
         return board;
     }
-
+    /**
+     * Checks if the system is Windows or Linux
+     */
+    private static void runningSystem(){
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")){
+            isWindows = true;
+            isLinux = false;
+        }      
+        else if (os.contains("nix") || os.contains("aix") || os.contains("nux")){
+            isWindows = false;
+            isLinux = true;
+        }
+    }
+    
 }
